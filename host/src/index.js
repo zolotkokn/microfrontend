@@ -1,7 +1,7 @@
 import React, { Suspense } from 'react';
 import { createRoot } from 'react-dom/client';
 
-const RemoteButton = React.lazy(() => import('remote/Button'));  // Импорт из remote
+const RemoteButton = React.lazy(() => import('remote/Button'));
 
 const App = () => (
     <div>

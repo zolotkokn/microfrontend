@@ -4,17 +4,16 @@ const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 const ModuleFederationPlugin = require('webpack').container.ModuleFederationPlugin;
 
 module.exports = (env = {}) => {
-
     console.log('PARAMS:', env.customParams);
 
     return {
-        entry: './host/src/index.js', // Начальная точка входа для host
-        mode: 'production',  // Используем production для продакшн-сборки
+        entry: './host/src/index.js',
+        mode: 'production',
         output: {
-            filename: 'main.[contenthash].js',  // Уникальные имена файлов для кэширования
-            path: path.resolve(__dirname, 'build'),  // Одна директория для всех файлов
-            publicPath: '/',  // Файлы будут загружаться из корня
-            clean: true,  // Очистка директории перед сборкой
+            filename: 'main.[contenthash].js',
+            path: path.resolve(__dirname, 'build'),
+            publicPath: '/',
+            clean: true,
         },
         module: {
             rules: [
@@ -22,18 +21,16 @@ module.exports = (env = {}) => {
                     test: /\.js$/,
                     exclude: /node_modules/,
                     use: {
-                        loader: 'babel-loader', // Используем babel-loader для транспиляции
+                        loader: 'babel-loader',
                     },
                 },
             ],
         },
         plugins: [
-            new CleanWebpackPlugin(), // Очистка папки dist перед сборкой
-            // Настраиваем Module Federation для host
+            new CleanWebpackPlugin(),
             new ModuleFederationPlugin({
                 name: 'host',
                 remotes: {
-                    // Указываем путь к remote, который будет в той же директории
                     remote: 'remote@/remoteEntry.js',
                 },
                 shared: {
@@ -41,33 +38,25 @@ module.exports = (env = {}) => {
                     'react-dom': { singleton: true, eager: true },
                 },
             }),
-            // HtmlWebpackPlugin для host-приложения
             new HtmlWebpackPlugin({
                 template: './host/index.html',
-                filename: 'index.html',  // Главный файл index для host-приложения
+                filename: 'index.html',
             }),
-
-            // Настраиваем Module Federation для remote
             new ModuleFederationPlugin({
                 name: 'remote',
-                filename: 'remoteEntry.js',  // Файл экспорта remote в той же папке
+                filename: 'remoteEntry.js',
                 exposes: {
-                    './Button': './remote/src/Button',  // Экспортируем компонент Button
+                    './Button': './remote/src/Button',
                 },
                 shared: {
                     react: { singleton: true, eager: true },
                     'react-dom': { singleton: true, eager: true },
                 },
             }),
-            // HtmlWebpackPlugin для remote (если нужен отдельный рендеринг remote)
-            // new HtmlWebpackPlugin({
-            //     template: './remote/index.html',
-            //     filename: 'remote.html',  // Отдельный HTML для remote (опционально)
-            // }),
         ],
         optimization: {
             splitChunks: {
-                chunks: 'all', // Разделение общих частей кода в отдельные файлы
+                chunks: 'all',
             },
         },
     }
