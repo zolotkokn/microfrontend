@@ -7,8 +7,14 @@ module.exports = (env = {}) => {
     console.log('PARAMS:', env.customParams);
 
     return {
-        entry: './host/src/index.js',
         mode: 'development',
+        entry: './host/src/index.js',
+        resolve: {
+            modules: [
+                path.resolve(__dirname, 'node_modules'), 'node_modules'
+            ],
+            extensions: ['.js', '.jsx', '.json']
+        },
         devServer: {
             historyApiFallback: true,
             static: {
@@ -31,7 +37,7 @@ module.exports = (env = {}) => {
             rules: [
                 {
                     test: /\.js$/,
-                    exclude: /node_modules/,
+                    exclude: /node_modules|Remote/,
                     use: {
                         loader: 'babel-loader',
                     },

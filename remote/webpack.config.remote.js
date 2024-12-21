@@ -26,14 +26,6 @@ module.exports = {
     },
     plugins: [
         new CleanWebpackPlugin(),
-        // new ModuleFederationPlugin({
-        //     name: 'remote', // Имя remote-приложения
-        //     filename: 'remoteEntry.js', // Входной файл с экспонируемыми модулями
-        //     exposes: {
-        //         './Button': './src/Button', // Экспонируемый модуль
-        //     },
-        //     shared: { react: { singleton: true }, 'react-dom': { singleton: true } },
-        // }),
         new HtmlWebpackPlugin({
             template: './index.html',
         }),
