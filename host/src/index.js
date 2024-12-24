@@ -1,20 +1,11 @@
-import React, { Suspense } from 'react';
+import React from 'react';
 import { createRoot } from 'react-dom/client';
 
-const RemoteButton = React.lazy(() => import('remote/Button'));
-
-const App = () => (
-    <div>
-        <h1>Host Application</h1>
-        <Suspense fallback="Loading Button...">
-            <RemoteButton/>
-        </Suspense>
-    </div>
-);
+import App from './app';
 
 const root = createRoot(document.getElementById('root'));
 root.render(
     <React.StrictMode>
-        <App />
+        <App/>
     </React.StrictMode>
 );

@@ -31,11 +31,14 @@ module.exports = (env = {}) => {
             new ModuleFederationPlugin({
                 name: 'host',
                 remotes: {
-                    remote: 'remote@/remoteEntry.js',
+                    remote: 'remote@/remoteEntry.[contenthash].js',
+                    store: 'store@/remoteStoreEntry.[contenthash].js',
+                    ui: 'ui@/remoteUiEntry.[contenthash].js',
                 },
                 shared: {
                     react: { singleton: true, eager: true },
                     'react-dom': { singleton: true, eager: true },
+                    'react-redux': {singleton: true, eager: true},
                 },
             }),
             new HtmlWebpackPlugin({
@@ -44,13 +47,39 @@ module.exports = (env = {}) => {
             }),
             new ModuleFederationPlugin({
                 name: 'remote',
-                filename: 'remoteEntry.js',
+                filename: 'remoteEntry.[contenthash].js',
                 exposes: {
                     './Button': './remote/src/Button',
                 },
                 shared: {
                     react: { singleton: true, eager: true },
                     'react-dom': { singleton: true, eager: true },
+                },
+            }),
+            new ModuleFederationPlugin({
+                name: 'store',
+                filename: 'remoteStoreEntry.[contenthash].js',
+                exposes: {
+                    './Store': './store/src/store',
+                },
+                shared: {
+                    react: {singleton: true, eager: true},
+                    'react-dom': {singleton: true, eager: true},
+                    'react-redux': {singleton: true, eager: true},
+                },
+            }),
+
+            new ModuleFederationPlugin({
+                name: 'ui',
+                filename: 'remoteUiEntry.[contenthash].js',
+                exposes: {
+                    './TodoList': './ui/src/TodoList',
+                    './TodoForm': './ui/src/TodoForm',
+                },
+                shared: {
+                    react: {singleton: true, eager: true},
+                    'react-dom': {singleton: true, eager: true},
+                    'react-redux': {singleton: true, eager: true},
                 },
             }),
         ],

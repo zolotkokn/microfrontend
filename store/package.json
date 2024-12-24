@@ -1,11 +1,11 @@
 {
-  "name": "microfrontend",
+  "name": "microfrontend-store",
   "version": "1.0.0",
   "author": "zolotkokn",
   "license": "MIT",
   "scripts": {
-    "start": "yarn webpack serve --config webpack.config.dev.js --env customParams=customParams",
-    "build": "yarn webpack --config webpack.config.js --env customParams=customParams"
+    "start": "yarn webpack serve --config webpack.config.store.js --env customParams=customParams",
+    "build": "yarn webpack --config webpack.config.store.js --env customParams=customParams"
   },
   "devDependencies": {
     "@babel/core": "^7.26.0",
@@ -19,6 +19,7 @@
     "webpack-dev-server": "^5.2.0"
   },
   "dependencies": {
+    "@reduxjs/toolkit": "^2.5.0",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
     "react-redux": "^9.2.0"

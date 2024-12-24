@@ -50,10 +50,13 @@ module.exports = (env = {}) => {
                 name: 'host',
                 remotes: {
                     remote: 'remote@/remoteEntry.js',
+                    store: 'store@/remoteStoreEntry.js',
+                    ui: 'ui@/remoteUiEntry.js',
                 },
                 shared: {
                     react: {singleton: true, eager: true},
                     'react-dom': {singleton: true, eager: true},
+                    'react-redux': {singleton: true, eager: true},
                 },
             }),
             new HtmlWebpackPlugin({
@@ -69,6 +72,33 @@ module.exports = (env = {}) => {
                 shared: {
                     react: {singleton: true, eager: true},
                     'react-dom': {singleton: true, eager: true},
+                },
+            }),
+
+            new ModuleFederationPlugin({
+                name: 'store',
+                filename: 'remoteStoreEntry.js',
+                exposes: {
+                    './Store': './store/src/store',
+                },
+                shared: {
+                    react: {singleton: true, eager: true},
+                    'react-dom': {singleton: true, eager: true},
+                    'react-redux': {singleton: true, eager: true},
+                },
+            }),
+
+            new ModuleFederationPlugin({
+                name: 'ui',
+                filename: 'remoteUiEntry.js',
+                exposes: {
+                    './TodoList': './ui/src/TodoList',
+                    './TodoForm': './ui/src/TodoForm',
+                },
+                shared: {
+                    react: {singleton: true, eager: true},
+                    'react-dom': {singleton: true, eager: true},
+                    'react-redux': {singleton: true, eager: true},
                 },
             }),
         ],
